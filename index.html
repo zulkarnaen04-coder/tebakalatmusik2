@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Ear Training & Wawasan Alat Musik Tradisional</title>
+  <style>
+    :root {
+      --bg-color: #0c0d14;
+      --card-bg: radial-gradient(circle, #1a1b26 0%, #0c0d14 100%);
+      --neon-cyan: #00f3ff;
+      --neon-pink: #ff007f;
+      --neon-green: #39ff14;
+      --neon-yellow: #ffe600;
+      --neon-purple: #9d4edd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-color);
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .welcome-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .brand-title {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-cyan);
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .sub-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--neon-pink);
+      text-shadow: 0 0 10px var(--neon-pink);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-card {
+      width: 100%;
+      background: rgba(20, 20, 35, 0.6);
+      border: 2px solid var(--neon-pink);
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+      margin-bottom: 15px;
+    }
+
+    .form-card label {
+      display: block;
+      color: var(--neon-yellow);
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .form-card input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 2px solid #00f3ff55;
+      background: #090a10;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .rules-card {
+      width: 100%;
+      background: rgba(20, 20, 35, 0.6);
+      border: 2px solid var(--neon-purple);
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 0 20px rgba(157, 78, 221, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .rules-card h3 { color: var(--neon-yellow); font-size: 0.95rem; margin-bottom: 10px; }
+    .rules-card ul { list-style: none; }
+    .rules-card li { font-size: 0.85rem; line-height: 1.4; margin-bottom: 8px; color: #ddd; }
+
+    .btn-start {
+      width: 100%;
+      background: linear-gradient(90deg, #00f3ff, #9d4edd);
+      border: none;
+      color: #fff;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px var(--neon-cyan);
+      transition: all 0.3s ease;
+    }
+
+    .game-container {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header { text-align: center; margin-bottom: 10px; width: 100%; }
+    h1 { font-size: 1.4rem; color: #fff; text-shadow: 0 0 10px var(--neon-cyan); margin-bottom: 10px; }
+
+    .status-panel {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 8px 15px;
+      border-radius: 50px;
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      flex-wrap: wrap;
+    }
+
+    .btn-play {
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--neon-pink);
+    }
+
+    .info-badge {
+      font-size: 0.88rem;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .timer-board { color: var(--neon-cyan); }
+    .score-board { color: var(--neon-green); }
+    .profession-board { color: var(--neon-yellow); }
+
+    #message { margin-top: 8px; font-size: 1rem; font-weight: bold; min-height: 24px; text-align: center; }
+    .msg-error { color: var(--neon-pink); }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 900px) { .grid-container { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 600px) { .grid-container { grid-template-columns: repeat(4, 1fr); gap: 6px; } }
+
+    .instrument-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.2s ease;
+      padding: 4px;
+      overflow: hidden;
+    }
+
+    .instrument-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
+
+    .instrument-card.wrong {
+      border-color: #ff0000 !important;
+      box-shadow: 0 0 20px #ff0000 !important;
+    }
+
+    /* Modal Pop-Up Tebak Daerah */
+    .correct-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.94);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 15px;
+    }
+
+    .correct-box {
+      max-width: 320px;
+      max-height: 220px;
+      border-radius: 12px;
+      border: 3px solid var(--neon-green);
+      box-shadow: 0 0 25px var(--neon-green);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .correct-box img { width: 100%; height: 100%; object-fit: cover; }
+    .correct-text { font-size: 1.3rem; font-weight: 900; color: var(--neon-green); text-align: center; }
+
+    .region-question-box {
+      margin-top: 15px;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--neon-yellow);
+    }
+
+    .region-title { color: var(--neon-yellow); font-size: 1rem; font-weight: bold; margin-bottom: 12px; }
+
+    .region-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .btn-region {
+      background: #1a1b26;
+      border: 2px solid var(--neon-cyan);
+      color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-region:hover { background: var(--neon-cyan); color: #000; }
+
+    /* Modal Game Over */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.88);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-box {
+      background: #1a1b26;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 16px;
+      padding: 25px;
+      width: 90%;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    .btn-restart {
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+      border: none;
+      color: #fff;
+      padding: 12px 24px;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TAMPILAN AWAL -->
+  <div class="welcome-container" id="welcomeScreen">
+    <div class="brand-title">ZULKARNAEN</div>
+    <div class="sub-title">🎧 KUIS EAR TRAINING & WAWASAN REGIONAL 🎧</div>
+
+    <div class="form-card">
+      <label>NAMA LENGKAP MURID:</label>
+      <input type="text" id="inputNama" placeholder="Masukkan nama lengkap..." required>
+
+      <label>KELAS:</label>
+      <input type="text" id="inputKelas" placeholder="Contoh: 7 Unggul / 7.1" required>
+    </div>
+
+    <div class="rules-card">
+      <h3>ATURAN KUIS:</h3>
+      <ul>
+        <li>🎧 <b>Sesi 1:</b> Tebak Gambar dari Suara (+10 Poin).</li>
+        <li>📍 <b>Sesi 2:</b> Tebak Asal Daerah Alat Musik (+5 Poin Bonus).</li>
+        <li>⏱️ <b>Waktu Total:</b> 30 Menit.</li>
+        <li>👑 <b>Target Maksimal:</b> 500 Poin.</li>
+      </ul>
+    </div>
+
+    <button class="btn-start" id="btnStartGame">START GAME 🚀</button>
+  </div>
+
+  <!-- TAMPILAN KUIS UTAMA -->
+  <div class="game-container" id="gameScreen">
+    <header>
+      <h1>Tebak Alat Musik Tradisional</h1>
+      <div class="status-panel">
+        <button class="btn-play" id="btnPlay">🎼 Putar Suara Target</button>
+        <div class="info-badge timer-board">⏱️ <span id="timer">30:00</span></div>
+        <div class="info-badge score-board">Skor: <span id="score">0</span></div>
+        <div class="info-badge profession-board">Pangkat: <span id="professionIcon">⚔️ Warrior</span></div>
+      </div>
+      <div id="message">Klik "Putar Suara Target" untuk memulai!</div>
+    </header>
+
+    <div class="grid-container" id="grid"></div>
+  </div>
+
+  <!-- OVERLAY POP-UP TEBAK DAERAH -->
+  <div class="correct-overlay" id="correctOverlay">
+    <div class="correct-box">
+      <img id="correctImage" src="" alt="Gambar Benar">
+    </div>
+    <div class="correct-text" id="correctText">BENAR! Ini adalah...</div>
+
+    <div class="region-question-box">
+      <div class="region-title" id="regionQuestionTitle">📍 Pertanyaan Bonus (+5 Poin): Dari daerah mana alat musik ini berasal?</div>
+      <div class="region-options" id="regionOptions"></div>
+    </div>
+  </div>
+
+  <!-- MODAL SELESAI -->
+  <div class="modal-overlay" id="modalGameOver" style="display: none;">
+    <div class="modal-box">
+      <h2 id="gameOverTitle" style="color: var(--neon-pink); margin-bottom: 15px;">KUIS SELESAI! ⏱️</h2>
+      <p id="gameOverReason" style="margin: 10px 0;">Waktu telah habis!</p>
+      <p style="font-size: 1.2rem; font-weight: bold; color: var(--neon-green);">Skor Akhir: <span id="finalScore">0</span> / 500</p>
+      <p style="margin-top: 8px;">Pangkat Akhir: <span id="finalProfession">⚔️ Warrior</span></p>
+      <p id="sendStatus" style="margin-top: 15px; font-size: 0.85rem; color: var(--neon-yellow);">Mengirim data ke guru...</p>
+      <button class="btn-restart" onclick="location.reload()">Main Lagi 🔄</button>
+    </div>
+  </div>
+
+  <script>
+    const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbwHaYUn_Ht10DTaMc6CXJfkjDVi8IQGI4wV_CCmldkwLTudZR9yPa7eGH-lDaR22EyD/exec";
+
+    let siswaNama = "", siswaKelas = "", score = 0, isGameOver = false, isPlaying = false;
+    let totalSeconds = 30 * 60, timerInterval = null;
+
+    // DATA 40 ALAT MUSIK
+    const instrumentsData = {
+      // 20 Asli
+      akordeon: { name: "Akordeon", daerah: "Sumatera Selatan / Riau", audioFile: "akordeon.mp3", imageFile: "akordeon.JPG" },
+      angklung: { name: "Angklung", daerah: "Jawa Barat", audioFile: "angklung.mp3", imageFile: "angklung.JPG" },
+      arababu: { name: "Arababu", daerah: "Maluku", audioFile: "arababu.mp3", imageFile: "arababu.JPG" },
+      bansi: { name: "Bansi", daerah: "Sumatera Barat", audioFile: "bansi.mp3", imageFile: "bansi.jpg" },
+      biola: { name: "Biola", daerah: "Maluku", audioFile: "biola.mp3", imageFile: "biola.JPG" },
+      gambus: { name: "Gambus", daerah: "Riau", audioFile: "gambus.mp3", imageFile: "gambus.JPG" },
+      gamelan: { name: "Gamelan", daerah: "Jawa Tengah", audioFile: "gamelan.mp3", imageFile: "gamelan.JPG" },
+      gandangtabuik: { name: "Gandang Tabuik", daerah: "Sumatera Barat", audioFile: "gandangtabuik.mp3", imageFile: "gandangtabuik.JPG" },
+      gendangmelayu: { name: "Gendang Melayu", daerah: "Riau", audioFile: "gendangmelayu.mp3", imageFile: "gendangmelayu.JPG" },
+      gondangbatak: { name: "Gondang Batak", daerah: "Sumatera Utara", audioFile: "gondangbatak.mp3", imageFile: "gondangbatak.JPG" },
+      kecapi: { name: "Kecapi", daerah: "Jawa Barat", audioFile: "kecapi.mp3", imageFile: "kecapi.jpg" },
+      kolintang: { name: "Kolintang", daerah: "Sulawesi Utara", audioFile: "kolintang.mp3", imageFile: "kolintang.JPG" },
+      kompang: { name: "Kompang", daerah: "Riau", audioFile: "kompang.mp3", imageFile: "kompang.JPG" },
+      marwas: { name: "Marwas", daerah: "Riau", audioFile: "marwas.mp3", imageFile: "marwas.JPG" },
+      pikon: { name: "Pikon", daerah: "Papua", audioFile: "pikon.mp3", imageFile: "pikon.jpg" },
+      saluang: { name: "Saluang", daerah: "Sumatera Barat", audioFile: "saluang.mp3", imageFile: "saluang.jpg" },
+      sape: { name: "Sape", daerah: "Kalimantan Barat", audioFile: "sape.mp3", imageFile: "sape.JPG" },
+      sasando: { name: "Sasando", daerah: "Nusa Tenggara Timur (NTT)", audioFile: "sasando.mp3", imageFile: "sasando.JPG" },
+      surdam: { name: "Surdam", daerah: "Sumatera Utara", audioFile: "surdam.mp3", imageFile: "surdam.jpg" },
+      talempong: { name: "Talempong", daerah: "Sumatera Barat", audioFile: "talempong.mp3", imageFile: "talempong.JPG" },
+      
+      // 20 Tambahan Baru
+      tifa: { name: "Tifa", daerah: "Papua", audioFile: "tifa.mp3", imageFile: "tifa.jpg" },
+      calung: { name: "Calung", daerah: "Jawa Barat", audioFile: "calung.mp3", imageFile: "calung.jpg" },
+      siter: { name: "Siter", daerah: "Jawa Tengah", audioFile: "siter.mp3", imageFile: "siter.jpg" },
+      sulingbambu: { name: "Suling Bambu", daerah: "Jawa Barat", audioFile: "sulingbambu.mp3", imageFile: "sulingbambu.jpg" },
+      gong: { name: "Gong", daerah: "Jawa Tengah", audioFile: "gong.mp3", imageFile: "gong.jpg" },
+      rebab: { name: "Rebab", daerah: "DKI Jakarta", audioFile: "rebab.mp3", imageFile: "rebab.jpg" },
+      kendang: { name: "Kendang", daerah: "Jawa Tengah", audioFile: "kendang.mp3", imageFile: "kendang.jpg" },
+      tarling: { name: "Tarling", daerah: "Jawa Barat", audioFile: "tarling.mp3", imageFile: "tarling.jpg" },
+      sampe: { name: "Sampe", daerah: "Kalimantan Timur", audioFile: "sampe.mp3", imageFile: "sampe.jpg" },
+      panting: { name: "Panting", daerah: "Kalimantan Selatan", audioFile: "panting.mp3", imageFile: "panting.jpg" },
+      gendangbeleq: { name: "Gendang Beleq", daerah: "Nusa Tenggara Barat (NTB)", audioFile: "gendangbeleq.mp3", imageFile: "gendangbeleq.jpg" },
+      lalove: { name: "Lalove", daerah: "Sulawesi Tengah", audioFile: "lalove.mp3", imageFile: "lalove.jpg" },
+      kesokeso: { name: "Keso-Keso", daerah: "Sulawesi Selatan", audioFile: "kesokeso.mp3", imageFile: "kesokeso.jpg" },
+      popondi: { name: "Popondi", daerah: "Sulawesi Selatan", audioFile: "popondi.mp3", imageFile: "popondi.jpg" },
+      fu: { name: "Fu", daerah: "Maluku Utara", audioFile: "fu.mp3", imageFile: "fu.jpg" },
+      ganda: { name: "Ganda", daerah: "Sulawesi Tengah", audioFile: "ganda.mp3", imageFile: "ganda.jpg" },
+      jalumpang: { name: "Jalumpang", daerah: "Sulawesi Tenggara", audioFile: "jalumpang.mp3", imageFile: "jalumpang.jpg" },
+      cengceng: { name: "Cengceng", daerah: "Bali", audioFile: "cengceng.mp3", imageFile: "cengceng.jpg" },
+      kecapimandar: { name: "Kecapi Mandar", daerah: "Sulawesi Barat", audioFile: "kecapimandar.mp3", imageFile: "kecapimandar.jpg" },
+      tuma: { name: "Tuma", daerah: "Kalimantan Barat", audioFile: "tuma.mp3", imageFile: "tuma.jpg" }
+    };
+
+    const instrumentKeys = Object.keys(instrumentsData);
+    let targetKey = '', currentAudio = null;
+    let firstRoundQueue = [...instrumentKeys].sort(() => Math.random() - 0.5);
+
+    document.getElementById('btnStartGame').addEventListener('click', () => {
+      const nama = document.getElementById('inputNama').value.trim();
+      const kelas = document.getElementById('inputKelas').value.trim();
+
+      if (!nama || !kelas) { alert("Harap isi Nama Lengkap dan Kelas!"); return; }
+
+      siswaNama = nama; siswaKelas = kelas;
+      document.getElementById('welcomeScreen').style.display = 'none';
+      document.getElementById('gameScreen').style.display = 'flex';
+
+      startTimer(); renderCards(); pickNextTarget(); updateProfessionDisplay();
+    });
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        if (totalSeconds <= 0) {
+          clearInterval(timerInterval);
+          triggerGameOver("Waktu kuis (30 Menit) telah habis!");
+          return;
+        }
+        totalSeconds--;
+        const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+        const s = (totalSeconds % 60).toString().padStart(2, '0');
+        document.getElementById('timer').textContent = `${m}:${s}`;
+      }, 1000);
+    }
+
+    function getProfessionStatus(s) {
+      if (s >= 400) return "👑 Presiden";
+      if (s >= 175) return "💼 Menteri";
+      if (s >= 90) return "👨‍🏫 Guru";
+      return "⚔️ Warrior";
+    }
+
+    function updateProfessionDisplay() {
+      document.getElementById('professionIcon').textContent = getProfessionStatus(score);
+    }
+
+    function pickNextTarget() {
+      if (firstRoundQueue.length > 0) targetKey = firstRoundQueue.shift();
+      else targetKey = instrumentKeys[Math.floor(Math.random() * instrumentKeys.length)];
+    }
+
+    function playAudio(filePath, retryIndex = 0) {
+      if (!filePath || isGameOver) return;
+      if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+
+      currentAudio = new Audio(filePath);
+      const playPromise = currentAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          if (isPlaying) messageEl.textContent = "Dengarkan baik-baik... Tebak alat musik yang bersuara ini!";
+        }).catch(err => {
+          const extList = ['.mp3', '.MP3', '.wav', '.WAV'];
+          if (retryIndex < extList.length) {
+            const baseName = filePath.substring(0, filePath.lastIndexOf('.'));
+            playAudio(baseName + extList[retryIndex], retryIndex + 1);
+          }
+        });
+      }
+    }
+
+    const neonColors = ['#00f3ff', '#ff007f', '#39ff14', '#ffe600', '#9d4edd'];
+    const gridEl = document.getElementById('grid');
+    const btnPlayEl = document.getElementById('btnPlay');
+    const scoreEl = document.getElementById('score');
+    const messageEl = document.getElementById('message');
+
+    function handleImageError(img, originalPath, step = 0) {
+      const baseName = originalPath.substring(0, originalPath.lastIndexOf('.'));
+      const formats = ['.JPG', '.jpg', '.jpeg', '.PNG', '.png'];
+      if (step < formats.length) {
+        img.onerror = () => handleImageError(img, originalPath, step + 1);
+        img.src = baseName + formats[step];
+      }
+    }
+
+    function renderCards() {
+      gridEl.innerHTML = '';
+      const shuffled = [...instrumentKeys].sort(() => Math.random() - 0.5);
+
+      shuffled.forEach((key, index) => {
+        const item = instrumentsData[key];
+        const card = document.createElement('div');
+        card.classList.add('instrument-card');
+        card.style.borderColor = neonColors[index % neonColors.length];
+
+        const img = document.createElement('img');
+        img.src = item.imageFile;
+        img.onerror = () => handleImageError(img, item.imageFile);
+
+        card.appendChild(img);
+        card.addEventListener('click', () => handleCardClick(card, key));
+        gridEl.appendChild(card);
+      });
+    }
+
+    btnPlayEl.addEventListener('click', () => {
+      if (isGameOver) return;
+      isPlaying = true;
+      playAudio(instrumentsData[targetKey].audioFile);
+    });
+
+    function handleCardClick(card, clickedKey) {
+      if (isGameOver) return;
+      playAudio(instrumentsData[clickedKey].audioFile);
+
+      if (!isPlaying) {
+        messageEl.textContent = "Klik 'Putar Suara Target' terlebih dahulu!";
+        messageEl.className = "msg-error";
+        return;
+      }
+
+      if (clickedKey === targetKey) {
+        score += 10;
+        scoreEl.textContent = score;
+        updateProfessionDisplay();
+
+        showRegionQuestion(clickedKey);
+      } else {
+        score -= 5;
+        if (score < 0) score = 0;
+        scoreEl.textContent = score;
+        updateProfessionDisplay();
+        card.classList.add('wrong');
+        messageEl.textContent = "SALAH! ❌ (-5 Poin). Coba lagi!";
+        messageEl.className = "msg-error";
+        setTimeout(() => card.classList.remove('wrong'), 600);
+      }
+    }
+
+    // Fungsi Membuat Pertanyaan Bonus Daerah (Multiple Choice)
+    function showRegionQuestion(key) {
+      const targetItem = instrumentsData[key];
+      const overlay = document.getElementById('correctOverlay');
+      const correctImg = document.getElementById('correctImage');
+      
+      correctImg.src = targetItem.imageFile;
+      correctImg.onerror = () => handleImageError(correctImg, targetItem.imageFile);
+
+      document.getElementById('correctText').textContent = `BENAR! 🎉 Ini adalah ${targetItem.name} (+10 Poin)`;
+
+      // Kumpulkan Pilihan Daerah Acak
+      const correctRegion = targetItem.daerah;
+      const allRegions = Array.from(new Set(Object.values(instrumentsData).map(i => i.daerah)));
+      const filteredRegions = allRegions.filter(r => r !== correctRegion);
+      
+      // Ambil 3 pilihan salah secara acak
+      const wrongChoices = filteredRegions.sort(() => Math.random() - 0.5).slice(0, 3);
+      const options = [correctRegion, ...wrongChoices].sort(() => Math.random() - 0.5);
+
+      const optionsContainer = document.getElementById('regionOptions');
+      optionsContainer.innerHTML = '';
+
+      options.forEach(region => {
+        const btn = document.createElement('button');
+        btn.classList.add('btn-region');
+        btn.textContent = region;
+        btn.onclick = () => handleRegionAnswer(region, correctRegion);
+        optionsContainer.appendChild(btn);
+      });
+
+      overlay.style.display = 'flex';
+      isPlaying = false;
+    }
+
+    function handleRegionAnswer(selectedRegion, correctRegion) {
+      const overlay = document.getElementById('correctOverlay');
+
+      if (selectedRegion === correctRegion) {
+        score += 5;
+        alert("TEBAKAN DAERAH BENAR! 🌟 Bonus +5 Poin!");
+      } else {
+        alert(`TEBAKAN DAERAH KURANG TEPAT! ❌ Yang benar adalah: ${correctRegion}`);
+      }
+
+      scoreEl.textContent = score;
+      updateProfessionDisplay();
+      overlay.style.display = 'none';
+
+      if (score >= 500) {
+        score = 500;
+        scoreEl.textContent = score;
+        triggerGameOver("SELAMAT! 👑 Kamu mencapai skor maksimal 500 Poin!");
+        return;
+      }
+
+      pickNextTarget();
+      messageEl.textContent = "Klik 'Putar Suara Target' untuk melanjutkan!";
+      messageEl.className = "";
+    }
+
+    function sendScoreToGSheet(skor) {
+      const statusEl = document.getElementById('sendStatus');
+      if (!URL_GOOGLE_SHEETS || URL_GOOGLE_SHEETS.includes("GANTI_DENGAN_URL")) {
+        statusEl.textContent = "Data tidak terhubung ke Google Sheets.";
+        return;
+      }
+
+      fetch(URL_GOOGLE_SHEETS, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nama: siswaNama,
+          kelas: siswaKelas,
+          skor: skor,
+          pangkat: getProfessionStatus(skor)
+        })
+      }).then(() => {
+        statusEl.textContent = "✅ Nilai berhasil terkirim ke Guru!";
+      }).catch(() => {
+        statusEl.textContent = "❌ Gagal mengirim nilai ke Google Sheets.";
+      });
+    }
+
+    function triggerGameOver(reason) {
+      isGameOver = true; isPlaying = false;
+      if (timerInterval) clearInterval(timerInterval);
+
+      document.getElementById('finalScore').textContent = score;
+      document.getElementById('finalProfession').textContent = getProfessionStatus(score);
+      document.getElementById('gameOverReason').textContent = reason;
+
+      if (score >= 500) {
+        document.getElementById('gameOverTitle').textContent = "SELESAI KELAS SANG JUARA! 👑";
+        document.getElementById('gameOverTitle').style.color = "var(--neon-green)";
+      }
+
+      document.getElementById('modalGameOver').style.display = 'flex';
+      sendScoreToGSheet(score);
+    }
+  </script>
+</body>
+</html>
