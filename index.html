@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis Ear Training & Wawasan Alat Musik Tradisional</title>
+  <title>Kuis Ear Training & Wawasan Alat Musik</title>
   <style>
     :root {
       --bg-color: #0c0d14;
@@ -14,7 +14,6 @@
       --neon-yellow: #ffe600;
       --neon-purple: #9d4edd;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -293,7 +292,7 @@
   <!-- TAMPILAN AWAL -->
   <div class="welcome-container" id="welcomeScreen">
     <div class="brand-title">ZULKARNAEN</div>
-    <div class="sub-title">🎧 KUIS EAR TRAINING & WAWASAN ALAT MUSIK 🎧</div>
+    <div class="sub-title">🎧 WAWASAN ALAT MUSIK 🎧</div>
 
     <div class="form-card">
       <label>NAMA LENGKAP:</label>
@@ -308,7 +307,7 @@
       <ul>
         <li>🎧 <b>Sesi 1:</b> Tebak Gambar dari Suara (+10 Poin).</li>
         <li>📍 <b>Sesi 2:</b> Tebak Asal Daerah Alat Musik (+5 Poin Bonus).</li>
-        <li>⏱️ <b>Waktu Total:</b> 30 Menit.</li>
+        <li>⏱️ <b>Waktu Total:</b> 39 Menit.</li>
         <li>👑 <b>Target Maksimal:</b> 500 Poin.</li>
       </ul>
     </div>
@@ -319,10 +318,10 @@
   <!-- TAMPILAN KUIS UTAMA -->
   <div class="game-container" id="gameScreen">
     <header>
-      <h1>Tebak Alat Musik Tradisional Dan Ear Training</h1>
+      <h1>Wawasan Alat Musik</h1>
       <div class="status-panel">
         <button class="btn-play" id="btnPlay">🎼 Putar Suara Target</button>
-        <div class="info-badge timer-board">⏱️ <span id="timer">30:00</span></div>
+        <div class="info-badge timer-board">⏱️ <span id="timer">39:00</span></div>
         <div class="info-badge score-board">Skor: <span id="score">0</span></div>
         <div class="info-badge profession-board">Pangkat: <span id="professionIcon">⚔️ Warrior</span></div>
       </div>
@@ -361,7 +360,7 @@
     const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbwHaYUn_Ht10DTaMc6CXJfkjDVi8IQGI4wV_CCmldkwLTudZR9yPa7eGH-lDaR22EyD/exec";
 
     let siswaNama = "", siswaKelas = "", score = 0, isGameOver = false, isPlaying = false;
-    let totalSeconds = 30 * 60, timerInterval = null;
+    let totalSeconds = 39 * 60, timerInterval = null;
 
     // DATA 40 ALAT MUSIK
     const instrumentsData = {
@@ -431,7 +430,7 @@
       timerInterval = setInterval(() => {
         if (totalSeconds <= 0) {
           clearInterval(timerInterval);
-          triggerGameOver("Waktu kuis (30 Menit) telah habis!");
+          triggerGameOver("Waktu kuis (39 Menit) telah habis!");
           return;
         }
         totalSeconds--;
