@@ -388,6 +388,7 @@
       
       // 17 Tambahan Baru
       tifa: { name: "Tifa", daerah: "Papua", audioFile: "tifa.mp3", imageFile: "tifa.jpg" },
+      puikpuik: { name: "Puikpuik", daerah: Sulawesi Selatan", audioFile: "puikpuik.mp3", imageFile: "puikpuik.jpg" },
       calung: { name: "Calung", daerah: "Jawa Barat", audioFile: "calung.mp3", imageFile: "calung.jpg" },
       siter: { name: "Siter", daerah: "Jawa Tengah", audioFile: "siter.mp3", imageFile: "siter.jpg" },
       sulingbambu: { name: "Suling Bambu", daerah: "Jawa Barat", audioFile: "sulingbambu.mp3", imageFile: "sulingbambu.jpg" },
@@ -401,8 +402,9 @@
       popondi: { name: "Popondi", daerah: "Sulawesi Selatan", audioFile: "popondi.mp3", imageFile: "popondi.jpg" },
       fu: { name: "Fu", daerah: "Maluku Utara", audioFile: "fu.mp3", imageFile: "fu.jpg" },
       cengceng: { name: "Cengceng", daerah: "Bali", audioFile: "cengceng.mp3", imageFile: "cengceng.jpg" },
-      kecapimandar: { name: "Kecapi Mandar", daerah: "Sulawesi Barat", audioFile: "kecapimandar.mp3", imageFile: "kecapimandar.jpg" }};
-      const instrumentKeys = Object.keys(instrumentsData);
+      kecapimandar: { name: "Kecapi Mandar", daerah: "Sulawesi Barat", audioFile: "kecapimandar.mp3", imageFile: "kecapimandar.jpg" }
+    };
+    const instrumentKeys = Object.keys(instrumentsData);
     let targetKey = '', currentAudio = null;
     let firstRoundQueue = [...instrumentKeys].sort(() => Math.random() - 0.5);
 
