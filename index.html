@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis Ear Training & Wawasan Alat Musik</title>
+  <title>Kuis Ear Training & Wawasan Alat Musik Tradisional</title>
   <style>
     :root {
       --bg-color: #0c0d14;
@@ -14,6 +14,7 @@
       --neon-yellow: #ffe600;
       --neon-purple: #9d4edd;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -292,14 +293,14 @@
   <!-- TAMPILAN AWAL -->
   <div class="welcome-container" id="welcomeScreen">
     <div class="brand-title">ZULKARNAEN</div>
-    <div class="sub-title">🎧 WAWASAN ALAT MUSIK 🎧</div>
+    <div class="sub-title">🎧 KUIS EAR TRAINING & WAWASAN REGIONAL 🎧</div>
 
     <div class="form-card">
-      <label>NAMA LENGKAP:</label>
+      <label>NAMA LENGKAP MURID:</label>
       <input type="text" id="inputNama" placeholder="Masukkan nama lengkap..." required>
 
       <label>KELAS:</label>
-      <input type="text" id="inputKelas" placeholder="Contoh: 7.1" required>
+      <input type="text" id="inputKelas" placeholder="Contoh: 7 Unggul / 7.1" required>
     </div>
 
     <div class="rules-card">
@@ -307,7 +308,7 @@
       <ul>
         <li>🎧 <b>Sesi 1:</b> Tebak Gambar dari Suara (+10 Poin).</li>
         <li>📍 <b>Sesi 2:</b> Tebak Asal Daerah Alat Musik (+5 Poin Bonus).</li>
-        <li>⏱️ <b>Waktu Total:</b> 39 Menit.</li>
+        <li>⏱️ <b>Waktu Total:</b> 30 Menit.</li>
         <li>👑 <b>Target Maksimal:</b> 500 Poin.</li>
       </ul>
     </div>
@@ -318,10 +319,10 @@
   <!-- TAMPILAN KUIS UTAMA -->
   <div class="game-container" id="gameScreen">
     <header>
-      <h1>Wawasan Alat Musik</h1>
+      <h1>Tebak Alat Musik Tradisional</h1>
       <div class="status-panel">
         <button class="btn-play" id="btnPlay">🎼 Putar Suara Target</button>
-        <div class="info-badge timer-board">⏱️ <span id="timer">39:00</span></div>
+        <div class="info-badge timer-board">⏱️ <span id="timer">30:00</span></div>
         <div class="info-badge score-board">Skor: <span id="score">0</span></div>
         <div class="info-badge profession-board">Pangkat: <span id="professionIcon">⚔️ Warrior</span></div>
       </div>
@@ -360,9 +361,9 @@
     const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbwHaYUn_Ht10DTaMc6CXJfkjDVi8IQGI4wV_CCmldkwLTudZR9yPa7eGH-lDaR22EyD/exec";
 
     let siswaNama = "", siswaKelas = "", score = 0, isGameOver = false, isPlaying = false;
-    let totalSeconds = 39 * 60, timerInterval = null;
+    let totalSeconds = 30 * 60, timerInterval = null;
 
-    // DATA 37 ALAT MUSIK
+    // DATA 40 ALAT MUSIK
     const instrumentsData = {
       // 20 Asli
       akordeon: { name: "Akordeon", daerah: "Sumatera Selatan / Riau", audioFile: "akordeon.mp3", imageFile: "akordeon.JPG" },
@@ -386,9 +387,8 @@
       surdam: { name: "Surdam", daerah: "Sumatera Utara", audioFile: "surdam.mp3", imageFile: "surdam.jpg" },
       talempong: { name: "Talempong", daerah: "Sumatera Barat", audioFile: "talempong.mp3", imageFile: "talempong.JPG" },
       
-      // 17 Tambahan Baru
+      // 20 Tambahan Baru
       tifa: { name: "Tifa", daerah: "Papua", audioFile: "tifa.mp3", imageFile: "tifa.jpg" },
-      puikpuik: { name: "Puikpuik", daerah: Sulawesi Selatan", audioFile: "puikpuik.mp3", imageFile: "puikpuik.jpg" },
       calung: { name: "Calung", daerah: "Jawa Barat", audioFile: "calung.mp3", imageFile: "calung.jpg" },
       siter: { name: "Siter", daerah: "Jawa Tengah", audioFile: "siter.mp3", imageFile: "siter.jpg" },
       sulingbambu: { name: "Suling Bambu", daerah: "Jawa Barat", audioFile: "sulingbambu.mp3", imageFile: "sulingbambu.jpg" },
@@ -397,13 +397,16 @@
       kendang: { name: "Kendang", daerah: "Jawa Tengah", audioFile: "kendang.mp3", imageFile: "kendang.jpg" },
       sulingtarling: { name: "Suling Tarling", daerah: "Jawa Barat", audioFile: "sulingtarling.mp3", imageFile: "sulingtarling.jpg" },
       panting: { name: "Panting", daerah: "Kalimantan Selatan", audioFile: "panting.mp3", imageFile: "panting.jpg" },
+      puikpuik: { name: "Puik Puik", daerah: "Sulawesi Selatan", audioFile: "puikpuik.mp3", imageFile: "puikpuik.jpg" },
       lalove: { name: "Lalove", daerah: "Sulawesi Tengah", audioFile: "lalove.mp3", imageFile: "lalove.jpg" },
       kesokeso: { name: "Keso-Keso", daerah: "Sulawesi Selatan", audioFile: "kesokeso.mp3", imageFile: "kesokeso.jpg" },
       popondi: { name: "Popondi", daerah: "Sulawesi Selatan", audioFile: "popondi.mp3", imageFile: "popondi.jpg" },
       fu: { name: "Fu", daerah: "Maluku Utara", audioFile: "fu.mp3", imageFile: "fu.jpg" },
       cengceng: { name: "Cengceng", daerah: "Bali", audioFile: "cengceng.mp3", imageFile: "cengceng.jpg" },
-      kecapimandar: { name: "Kecapi Mandar", daerah: "Sulawesi Barat", audioFile: "kecapimandar.mp3", imageFile: "kecapimandar.jpg" }
+      kecapimandar: { name: "Kecapi Mandar", daerah: "Sulawesi Barat", audioFile: "kecapimandar.mp3", imageFile: "kecapimandar.jpg" },
+      dol: { name: "Dol", daerah: "Bengkulu", audioFile: "dol.mp3", imageFile: "dol.jpg" }
     };
+
     const instrumentKeys = Object.keys(instrumentsData);
     let targetKey = '', currentAudio = null;
     let firstRoundQueue = [...instrumentKeys].sort(() => Math.random() - 0.5);
@@ -425,7 +428,7 @@
       timerInterval = setInterval(() => {
         if (totalSeconds <= 0) {
           clearInterval(timerInterval);
-          triggerGameOver("Waktu kuis (39 Menit) telah habis!");
+          triggerGameOver("Waktu kuis (30 Menit) telah habis!");
           return;
         }
         totalSeconds--;
