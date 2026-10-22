@@ -362,7 +362,7 @@
     let siswaNama = "", siswaKelas = "", score = 0, isGameOver = false, isPlaying = false;
     let totalSeconds = 39 * 60, timerInterval = null;
 
-    // DATA 40 ALAT MUSIK
+    // DATA 37 ALAT MUSIK
     const instrumentsData = {
       // 20 Asli
       akordeon: { name: "Akordeon", daerah: "Sumatera Selatan / Riau", audioFile: "akordeon.mp3", imageFile: "akordeon.JPG" },
@@ -395,18 +395,14 @@
       rebab: { name: "Rebab", daerah: "DKI Jakarta", audioFile: "rebab.mp3", imageFile: "rebab.jpg" },
       kendang: { name: "Kendang", daerah: "Jawa Tengah", audioFile: "kendang.mp3", imageFile: "kendang.jpg" },
       sulingtarling: { name: "Suling Tarling", daerah: "Jawa Barat", audioFile: "sulingtarling.mp3", imageFile: "sulingtarling.jpg" },
-      sampe: { name: "Sampe", daerah: "Kalimantan Timur", audioFile: "sampe.mp3", imageFile: "sampe.jpg" },
       panting: { name: "Panting", daerah: "Kalimantan Selatan", audioFile: "panting.mp3", imageFile: "panting.jpg" },
       lalove: { name: "Lalove", daerah: "Sulawesi Tengah", audioFile: "lalove.mp3", imageFile: "lalove.jpg" },
       kesokeso: { name: "Keso-Keso", daerah: "Sulawesi Selatan", audioFile: "kesokeso.mp3", imageFile: "kesokeso.jpg" },
       popondi: { name: "Popondi", daerah: "Sulawesi Selatan", audioFile: "popondi.mp3", imageFile: "popondi.jpg" },
       fu: { name: "Fu", daerah: "Maluku Utara", audioFile: "fu.mp3", imageFile: "fu.jpg" },
       cengceng: { name: "Cengceng", daerah: "Bali", audioFile: "cengceng.mp3", imageFile: "cengceng.jpg" },
-      kecapimandar: { name: "Kecapi Mandar", daerah: "Sulawesi Barat", audioFile: "kecapimandar.mp3", imageFile: "kecapimandar.jpg" },
-      tuma: { name: "Tuma", daerah: "Kalimantan Barat", audioFile: "tuma.mp3", imageFile: "tuma.jpg" }
-    };
-
-    const instrumentKeys = Object.keys(instrumentsData);
+      kecapimandar: { name: "Kecapi Mandar", daerah: "Sulawesi Barat", audioFile: "kecapimandar.mp3", imageFile: "kecapimandar.jpg" }};
+      const instrumentKeys = Object.keys(instrumentsData);
     let targetKey = '', currentAudio = null;
     let firstRoundQueue = [...instrumentKeys].sort(() => Math.random() - 0.5);
 
